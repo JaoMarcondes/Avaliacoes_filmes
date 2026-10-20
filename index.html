@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0d121d" />
-    <meta name="description" content="CineRate — descubra filmes e explore o catálogo." />
+    <meta name="description" content="CineRate — descubra filmes, avalie e compartilhe suas opiniões." />
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./style.css" />
     <title>CineRate — Login</title>
@@ -87,6 +87,13 @@
           <section id="movie-view" class="view" aria-label="Detalhes do filme" hidden>
             <button id="back-to-catalog" type="button" class="btn btn--back"><svg class="icon"><use href="#i-arrow-left"></use></svg> Voltar ao catálogo</button>
             <div id="movie-detail" class="movie-detail"></div>
+          </section>
+
+          <section id="profile-view" class="view" aria-labelledby="profile-title" hidden>
+            <div class="page-intro"><p class="eyebrow">SUAS OPINIÕES</p><h1 id="profile-title">Minhas <em>avaliações.</em></h1><p class="page-description">Confira as notas que você deu e volte aos filmes para editar ou excluir sua avaliação.</p></div>
+            <p class="profile-owner" id="profile-email"></p>
+            <div id="profile-notice" class="notice" role="alert" hidden></div>
+            <div id="profile-list" class="profile-list" aria-live="polite"></div>
           </section>
 
           <section id="placeholder-view" class="view" aria-labelledby="placeholder-title" hidden>

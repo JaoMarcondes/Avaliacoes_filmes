@@ -1,9 +1,5 @@
 # 🎬 CineRate — Sistema de Avaliação de Filmes
 
-## 🌐 Site exemplo
-
-https://avaliacoes-filmes.vercel.app/
-
 ## 📌 Sobre o projeto
 
 O **CineRate** é um aplicativo desktop desenvolvido em **Java**, com interface gráfica utilizando **Java Swing** e integração com o banco de dados **Supabase (PostgreSQL)**.

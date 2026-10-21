@@ -39,7 +39,7 @@ CineRate/
 ├── Supabase.java          # Autenticação e operações no banco
 ├── Estilo.java            # Cores, componentes e imagens
 ├── assets/
-│   └── icone_cinerate.png
+     └── icone_cinerate.png
 ```
 
 ### Responsabilidades dos arquivos

@@ -75,28 +75,3 @@ CineRate/
 | `cinerate_admins` | Controle de usuários administradores. |
 
 A autenticação é feita pelo **Supabase Auth**. As capas ficam no bucket **`capas-filmes`**; a tabela `filme` guarda os links no campo `imagem_url`.
-
-## ▶️ Como executar
-
-**Requisito:** JDK 17 ou superior.
-
-1. Baixe ou clone o repositório.
-2. Abra a pasta do projeto no VS Code.
-3. No Windows, execute `executar_windows.bat`.
-
-Como alternativa, execute no terminal da pasta onde estão os arquivos Java:
-
-```bash
-javac -encoding UTF-8 *.java
-java avaliacao_filmes
-```
-
-> **Nota:** a aplicação depende da configuração e das permissões de acesso do projeto Supabase. Não inclua senhas do banco ou chaves secretas (`service_role`) no código público.
-
-## 🎯 Objetivo acadêmico
-
-Praticar **programação orientada a objetos**, interfaces gráficas, organização em classes, **bancos de dados relacionais** e operações **CRUD** (criar, consultar, atualizar e excluir dados).
-
-## 🚧 Status
-
-Projeto em desenvolvimento e testes. As funcionalidades dependem de validação com o Supabase configurado para o CineRate.

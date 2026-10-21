@@ -40,7 +40,6 @@ CineRate/
 ├── Estilo.java            # Cores, componentes e imagens
 ├── assets/
 │   └── icone_cinerate.png
-└── executar_windows.bat
 ```
 
 ### Responsabilidades dos arquivos

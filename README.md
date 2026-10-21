@@ -1,128 +1,102 @@
-# 🎬 CineRate — Sistema de Avaliação de Filmes
+<div align="center">
 
-## 📌 Sobre o projeto
+# 🎬 CineRate
 
-O **CineRate** é um aplicativo desktop desenvolvido em **Java**, utilizando **Java Swing** para a interface gráfica e **Supabase (PostgreSQL)** para o armazenamento e gerenciamento dos dados.
+**Sistema de Avaliação de Filmes**
 
-O objetivo do sistema é permitir que usuários consultem um catálogo de filmes, visualizem suas capas e informações, atribuam notas e compartilhem avaliações.
+Aplicativo desktop desenvolvido em **Java Swing**, integrado ao **Supabase**.
 
-O projeto foi desenvolvido como parte das **Atividades Práticas Supervisionadas (APS)** do curso de Sistemas de Informação.
+**Avalie • Descubra • Compartilhe**
 
-## 🚀 Funcionalidades
+</div>
 
-- **Login e cadastro:** criação de contas e autenticação de usuários.
-- **Catálogo de filmes:** exibição dos filmes cadastrados com suas respectivas capas.
-- **Pesquisa e filtros:** busca de filmes por título e gênero.
-- **Detalhes dos filmes:** visualização de título, gênero, ano de lançamento e duração.
-- **Avaliações:** notas de 0 a 5 estrelas, permitindo intervalos de meia estrela, e comentários.
-- **Meu Perfil:** visualização, edição e exclusão das próprias avaliações.
-- **Cadastro de filmes:** inclusão de novos filmes, gêneros e capas por usuários administradores.
-- **Permissões:** usuários comuns podem avaliar filmes, enquanto administradores também podem cadastrar novos títulos.
+---
 
-## 🛠️ Tecnologias utilizadas
+## 📖 Sobre o projeto
 
-- **Java:** linguagem de programação principal.
-- **Java Swing:** criação das interfaces gráficas.
-- **Supabase:** autenticação e comunicação com o banco.
-- **PostgreSQL:** banco de dados relacional.
-- **Supabase Storage:** armazenamento das imagens dos filmes.
-- **API REST:** comunicação entre Java e Supabase.
+O **CineRate** permite explorar um catálogo de filmes, visualizar capas e informações e publicar avaliações com notas e comentários. Cada usuário pode consultar e gerenciar suas próprias avaliações.
 
-## 📁 Organização do código
+Projeto desenvolvido para as **Atividades Práticas Supervisionadas (APS)** do curso de Sistemas de Informação.
 
-Para facilitar o desenvolvimento e a manutenção, o CineRate foi dividido em **5 arquivos Java principais**.
+## ✨ Funcionalidades
 
-Essa organização permite separar as telas, a comunicação com o banco de dados e os componentes visuais, evitando concentrar todo o sistema em um único arquivo.
+- **Login e cadastro:** autenticação de usuários pelo Supabase Auth.
+- **Catálogo de filmes:** capas, títulos, gêneros, ano de lançamento e duração.
+- **Busca e filtros:** pesquisa por título e seleção por gênero.
+- **Avaliações:** notas de **0 a 5 estrelas**, com intervalos de meia estrela, e comentários.
+- **Meu perfil:** histórico de avaliações, com opções para editar e excluir.
+- **Área administrativa:** cadastro de novos filmes e capas por usuários autorizados.
 
-### Estrutura do projeto
+## 🧰 Tecnologias
+
+| Tecnologia | Utilização |
+| :--- | :--- |
+| **Java 17+** | Desenvolvimento da aplicação |
+| **Java Swing** | Interface gráfica |
+| **Supabase Auth** | Login e cadastro |
+| **PostgreSQL (Supabase)** | Banco de dados |
+| **Supabase Storage** | Armazenamento das capas |
+| **API REST** | Comunicação entre Java e Supabase |
+
+## 📂 Organização do projeto
+
+O código foi organizado em **cinco arquivos Java**, agrupando responsabilidades relacionadas para facilitar a leitura e a manutenção.
 
 ```text
 CineRate/
-│
-├── avaliacao_filmes.java
-├── TelasUsuario.java
-├── TelasFilmes.java
-├── Supabase.java
-├── Estilo.java
-│
+├── avaliacao_filmes.java   # Inicialização e navegação
+├── TelasUsuario.java      # Login, cadastro e perfil
+├── TelasFilmes.java       # Catálogo, avaliações e cadastro de filmes
+├── Supabase.java          # Autenticação e operações no banco
+├── Estilo.java            # Cores, componentes e imagens
 ├── assets/
 │   └── icone_cinerate.png
-│
-├── sql/
+└── executar_windows.bat
+```
 
-### 1. avaliacao_filmes.java — Arquivo principal
+### Responsabilidades dos arquivos
 
-É responsável por **iniciar o programa e controlar a navegação entre as telas**.
-
-Suas principais funções são:
-
-- Iniciar a aplicação.
-- Exibir o menu lateral.
-- Controlar a passagem de uma tela para outra.
-- Organizar o funcionamento geral do programa.
-
-### 2. TelasUsuario.java — Telas dos usuários
-
-Agrupa as interfaces relacionadas às contas e aos perfis.
-
-Contém três classes:
-
-- **LoginView:** entrada dos usuários no sistema.
-- **CadastroView:** criação de novas contas.
-- **PerfilView:** visualização dos dados e das avaliações do usuário.
-
-### 3. TelasFilmes.java — Telas dos filmes
-
-Reúne as interfaces relacionadas ao catálogo e às avaliações.
-
-Contém três classes:
-
-- **CatalogoView:** apresenta os filmes, imagens, pesquisa e filtros.
-- **FilmeView:** exibe os detalhes de um filme e permite publicar, editar ou excluir avaliações.
-- **CadastrarFilmeView:** permite que administradores cadastrem novos filmes e suas capas.
-
-### 4. Supabase.java — Comunicação com o banco
-
-É responsável por **enviar e receber informações do Supabase**.
-
-Suas principais funções são:
-
-- Autenticar e cadastrar usuários.
-- Consultar os filmes e gêneros.
-- Salvar, consultar, atualizar e excluir avaliações.
-- Consultar os nomes dos usuários.
-- Verificar permissões de administrador.
-- Registrar novos filmes.
-
-Também reúne as estruturas de dados utilizadas pelo aplicativo e o tratamento das respostas JSON.
-
-### 5. Estilo.java — Aparência e componentes
-
-Centraliza os elementos visuais que são utilizados em diferentes telas.
-
-Suas principais funções são:
-
-- Definir as cores e fontes.
-- Padronizar botões e campos.
-- Personalizar seletores de gênero.
-- Carregar e exibir as capas dos filmes.
-- Desenhar as estrelas das avaliações.
-- Reutilizar componentes gráficos.
-
-Dessa forma, é possível modificar o visual do aplicativo sem precisar alterar cada tela separadamente.
+| Arquivo | O que faz |
+| :--- | :--- |
+| `avaliacao_filmes.java` | Inicia o aplicativo e controla a troca de telas. |
+| `TelasUsuario.java` | Reúne login, cadastro e perfil do usuário. |
+| `TelasFilmes.java` | Exibe o catálogo, detalhes, avaliações e cadastro administrativo. |
+| `Supabase.java` | Faz as requisições à API, autentica usuários e consulta/grava dados. |
+| `Estilo.java` | Padroniza cores, botões, campos, estrelas e carregamento das capas. |
 
 ## 🗄️ Banco de dados
 
-O CineRate utiliza as seguintes tabelas:
-
 | Tabela | Finalidade |
-|---|---|
-| `filme` | Armazena os filmes cadastrados |
-| `genero` | Organiza os gêneros dos filmes |
-| `avaliacao_web` | Armazena notas e comentários |
-| `cinerate_perfis` | Armazena os nomes públicos dos usuários |
-| `cinerate_admins` | Identifica os administradores |
+| :--- | :--- |
+| `filme` | Dados dos filmes e URL de suas capas. |
+| `genero` | Categorias utilizadas nos filtros e cadastros. |
+| `avaliacao_web` | Notas e comentários associados a filmes e usuários. |
+| `cinerate_perfis` | Nomes públicos exibidos nas avaliações. |
+| `cinerate_admins` | Controle de usuários administradores. |
 
-O **Supabase Auth** é utilizado para autenticar as contas. As imagens ficam no bucket `capas-filmes`, e suas URLs são armazenadas no campo `imagem_url` da tabela `filme`.
+A autenticação é feita pelo **Supabase Auth**. As capas ficam no bucket **`capas-filmes`**; a tabela `filme` guarda os links no campo `imagem_url`.
 
-Todos os arquivos Java devem permanecer na mesma pasta para que a compilação funcione corretamente.
+## ▶️ Como executar
+
+**Requisito:** JDK 17 ou superior.
+
+1. Baixe ou clone o repositório.
+2. Abra a pasta do projeto no VS Code.
+3. No Windows, execute `executar_windows.bat`.
+
+Como alternativa, execute no terminal da pasta onde estão os arquivos Java:
+
+```bash
+javac -encoding UTF-8 *.java
+java avaliacao_filmes
+```
+
+> **Nota:** a aplicação depende da configuração e das permissões de acesso do projeto Supabase. Não inclua senhas do banco ou chaves secretas (`service_role`) no código público.
+
+## 🎯 Objetivo acadêmico
+
+Praticar **programação orientada a objetos**, interfaces gráficas, organização em classes, **bancos de dados relacionais** e operações **CRUD** (criar, consultar, atualizar e excluir dados).
+
+## 🚧 Status
+
+Projeto em desenvolvimento e testes. As funcionalidades dependem de validação com o Supabase configurado para o CineRate.

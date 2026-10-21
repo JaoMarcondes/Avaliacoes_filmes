@@ -27,17 +27,6 @@ Projeto desenvolvido para as **Atividades Práticas Supervisionadas (APS)** do c
 - **Meu perfil:** histórico de avaliações, com opções para editar e excluir.
 - **Área administrativa:** cadastro de novos filmes e capas por usuários autorizados.
 
-## 🧰 Tecnologias
-
-| Tecnologia | Utilização |
-| :--- | :--- |
-| **Java 17+** | Desenvolvimento da aplicação |
-| **Java Swing** | Interface gráfica |
-| **Supabase Auth** | Login e cadastro |
-| **PostgreSQL (Supabase)** | Banco de dados |
-| **Supabase Storage** | Armazenamento das capas |
-| **API REST** | Comunicação entre Java e Supabase |
-
 ## 📂 Organização do projeto
 
 O código foi organizado em **cinco arquivos Java**, agrupando responsabilidades relacionadas para facilitar a leitura e a manutenção.

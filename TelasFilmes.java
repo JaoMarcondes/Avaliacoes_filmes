@@ -1,18 +1,15 @@
 import java.awt.*;
-import java.io.File;
-import java.time.Year;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
-// Telas de filmes: Catálogo, Avaliações e Cadastro administrativo.
+// Telas de filmes: Catálogo e Avaliações.
 
 // -------- Catalogo --------
-/** Tela inicial com pesquisa, filtro por gênero e capas do Supabase. */
+/** Tela inicial com pesquisa, filtro por gênero e capas locais ou por URL. */
 class CatalogoView extends JPanel {
     private final avaliacao_filmes app;
     private final JTextField pesquisa = Estilo.campo();
@@ -318,135 +315,6 @@ class FilmeView extends JPanel {
             comentario.setText("");
             carregarAvaliacoes();
         }, erro -> { excluir.setEnabled(true); Estilo.erro(this,erro); });
-    }
-}
-
-
-// -------- CadastrarFilme --------
-/** Apenas administradores podem cadastrar filmes ou enviar capas ao bucket. */
-class CadastrarFilmeView extends JPanel {
-    private final avaliacao_filmes app;
-    private final JTextField titulo = Estilo.campo();
-    private final JTextField ano = Estilo.campo();
-    private final JTextField duracao = Estilo.campo();
-    private final JTextField url = Estilo.campo();
-    private final JComboBox<String> generos = Estilo.combo();
-    private final JLabel nomeArquivo = Estilo.secundario("Nenhuma imagem selecionada");
-    private File imagem;
-
-    CadastrarFilmeView(avaliacao_filmes app) {
-        super(new BorderLayout(0,20));
-        this.app = app;
-        setBackground(Estilo.FUNDO);
-        setBorder(new EmptyBorder(25,29,25,29));
-        JPanel tituloPagina = Estilo.transparente(new GridLayout(2,1,0,7));
-        tituloPagina.add(Estilo.texto("Cadastrar filme",27,true));
-        tituloPagina.add(Estilo.secundario("Inclusão de filmes no catálogo — acesso administrativo."));
-        add(tituloPagina,BorderLayout.NORTH);
-
-        JPanel formulario = new JPanel();
-        formulario.setLayout(new BoxLayout(formulario,BoxLayout.Y_AXIS));
-        formulario.setBorder(new EmptyBorder(26,30,26,30));
-        formulario.setBackground(Estilo.CARD);
-        adicionarCampo(formulario,"Título do filme *",titulo);
-        adicionarCampo(formulario,"Ano de lançamento *",ano);
-        adicionarCampo(formulario,"Duração em minutos *",duracao);
-        adicionarCampo(formulario,"Gênero *",generos);
-        adicionarCampo(formulario,"URL da capa (opcional se escolher arquivo)",url);
-        JPanel escolha = Estilo.transparente(new FlowLayout(FlowLayout.LEFT,9,0));
-        JButton procurar = Estilo.botao("Escolher capa no computador",false);
-        escolha.add(procurar);
-        escolha.add(nomeArquivo);
-        escolha.setAlignmentX(LEFT_ALIGNMENT);
-        formulario.add(escolha);
-        formulario.add(Box.createVerticalStrut(16));
-        JButton salvar = Estilo.botao("Salvar filme",true);
-        salvar.setMaximumSize(new Dimension(Integer.MAX_VALUE,44));
-        salvar.setAlignmentX(LEFT_ALIGNMENT);
-        formulario.add(salvar);
-        formulario.add(Box.createVerticalStrut(10));
-        JLabel status = Estilo.secundario("O catálogo usa o bucket público capas-filmes.");
-        status.setAlignmentX(LEFT_ALIGNMENT);
-        formulario.add(status);
-        JPanel largura = Estilo.transparente(new BorderLayout());
-        largura.add(formulario,BorderLayout.NORTH);
-        add(Estilo.rolagem(largura),BorderLayout.CENTER);
-
-        procurar.addActionListener(e -> {
-            JFileChooser seletor = new JFileChooser();
-            seletor.setFileFilter(new FileNameExtensionFilter("Capas PNG, JPG ou WebP","png","jpg","jpeg","webp"));
-            if (seletor.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                imagem = seletor.getSelectedFile();
-                nomeArquivo.setText(Estilo.curto(imagem.getName(),30));
-            }
-        });
-
-        salvar.addActionListener(e -> {
-            String nome = titulo.getText().trim();
-            int anoValor, duracaoValor;
-            try {
-                anoValor = Integer.parseInt(ano.getText().trim());
-                duracaoValor = Integer.parseInt(duracao.getText().trim());
-            } catch (NumberFormatException erro) {
-                Estilo.aviso(this,"Ano e duração precisam ser números inteiros."); return;
-            }
-            if (nome.isBlank() || nome.length()>150 || anoValor<1888
-                    || anoValor>Year.now().getValue()+3 || duracaoValor<=0) {
-                Estilo.aviso(this,"Confira o título, o ano e a duração do filme."); return;
-            }
-            int indice = generos.getSelectedIndex();
-            if (indice<1) { Estilo.aviso(this,"Escolha um gênero."); return; }
-            long idGenero = app.generos.keySet().stream().skip(indice-1).findFirst().orElse(0L);
-            String capaURL = url.getText().trim();
-            File arquivo = imagem;
-            if (arquivo == null && capaURL.isBlank()) {
-                Estilo.aviso(this,"Escolha uma imagem ou informe uma URL pública."); return;
-            }
-            if (arquivo == null && !capaURL.startsWith("https://")) {
-                Estilo.aviso(this,"Informe uma URL HTTPS válida para a capa."); return;
-            }
-            salvar.setEnabled(false);
-            status.setText("Salvando filme...");
-            Estilo.executar(() -> {
-                String capa = arquivo != null ? app.dados.enviarCapa(arquivo) : capaURL;
-                app.dados.cadastrarFilme(nome,anoValor,duracaoValor,idGenero,capa);
-                return true;
-            }, ok -> {
-                salvar.setEnabled(true);
-                Estilo.aviso(this,"Filme cadastrado com sucesso!");
-                app.abrirCatalogo();
-            }, erro -> {
-                salvar.setEnabled(true);
-                status.setText("Não foi possível cadastrar o filme.");
-                Estilo.erro(this,erro);
-            });
-        });
-
-        // Carrega os gêneros, mesmo se o administrador abrir esta tela primeiro.
-        generos.addItem("Selecione um gênero");
-        if (app.generos.isEmpty()) {
-            Estilo.executar(() -> app.dados.listarGeneros(), resultado -> {
-                app.generos = resultado;
-                preencherGeneros();
-            }, erro -> Estilo.erro(this,erro));
-        } else preencherGeneros();
-    }
-
-    private void preencherGeneros() {
-        generos.removeAllItems();
-        generos.addItem("Selecione um gênero");
-        for (String genero : app.generos.values()) generos.addItem(genero);
-    }
-
-    private void adicionarCampo(JPanel painel, String rotulo, JComponent componente) {
-        JLabel label = Estilo.texto(rotulo,13,true);
-        label.setAlignmentX(LEFT_ALIGNMENT);
-        painel.add(label);
-        painel.add(Box.createVerticalStrut(7));
-        componente.setMaximumSize(new Dimension(Integer.MAX_VALUE,44));
-        componente.setAlignmentX(LEFT_ALIGNMENT);
-        painel.add(componente);
-        painel.add(Box.createVerticalStrut(18));
     }
 }
 

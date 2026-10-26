@@ -118,7 +118,7 @@ class Estilo {
 
     /** Pinta o seletor fechado e aberto para não ficar branco no Windows. */
 
-    /** Executa operações do Supabase sem travar a janela. */
+    /** Executa operações do banco sem travar a janela. */
     static <T> void executar(Callable<T> tarefa, Consumer<T> sucesso, Consumer<Exception> erro) {
         new SwingWorker<T, Void>() {
             @Override protected T doInBackground() throws Exception { return tarefa.call(); }
@@ -208,11 +208,15 @@ class Imagens {
         }
         new SwingWorker<ImageIcon, Void>() {
             @Override protected ImageIcon doInBackground() throws Exception {
+                BufferedImage imagem;
+                if (url.startsWith("file:")) imagem = ImageIO.read(new java.io.File(URI.create(url)));
+                else {
                 HttpRequest req = HttpRequest.newBuilder(URI.create(url))
                         .timeout(java.time.Duration.ofSeconds(18)).GET().build();
                 HttpResponse<byte[]> resp = http.send(req, HttpResponse.BodyHandlers.ofByteArray());
                 if (resp.statusCode() != 200) throw new Exception("HTTP " + resp.statusCode());
-                BufferedImage imagem = ImageIO.read(new ByteArrayInputStream(resp.body()));
+                imagem = ImageIO.read(new ByteArrayInputStream(resp.body()));
+                }
                 if (imagem == null) throw new Exception("Formato de imagem desconhecido");
                 // Ajusta a capa sem distorcer sua proporção.
                 double escala = Math.max(largura / (double) imagem.getWidth(), altura / (double) imagem.getHeight());
@@ -233,7 +237,7 @@ class Imagens {
                     label.setText("");
                 } catch (Exception e) {
                     label.setText("Capa indisponível");
-                    label.setToolTipText("Confira imagem_url e o bucket capas-filmes");
+                    label.setToolTipText("Confira o arquivo da capa ou a URL informada");
                 }
             }
         }.execute();
@@ -244,12 +248,7 @@ class Imagens {
         if (url == null || url.isBlank()) return "";
         url = url.trim();
         if (url.startsWith("https://") || url.startsWith("http://")) return url.replace(" ", "%20");
-        if (url.startsWith("/storage/v1/")) return Supabase.URL + url.replace(" ", "%20");
-        if (url.startsWith(Supabase.BUCKET + "/")) url = url.substring(Supabase.BUCKET.length()+1);
-        StringJoiner caminho = new StringJoiner("/");
-        for (String parte : url.split("/"))
-            if (!parte.isEmpty()) caminho.add(URLEncoder.encode(parte, StandardCharsets.UTF_8).replace("+", "%20"));
-        return Supabase.URL + "/storage/v1/object/public/" + Supabase.BUCKET + "/" + caminho;
+        return java.nio.file.Path.of(url).toAbsolutePath().toUri().toString();
     }
 }
 
@@ -312,4 +311,5 @@ class Estrelas extends JComponent {
         g.dispose();
     }
 }
+
 

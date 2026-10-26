@@ -1,65 +1,108 @@
-<div align="center">
+# 🎬 CineRate — Sistema de Avaliação de Filmes
 
-# 🎬 CineRate
+O **CineRate** é um aplicativo desktop desenvolvido em **Java Swing**, com integração ao banco de dados **MySQL**.
 
-**Sistema de Avaliação de Filmes**
+O projeto permite consultar um catálogo de filmes, visualizar suas informações e compartilhar avaliações com outros usuários. Foi desenvolvido como parte das **Atividades Práticas Supervisionadas (APS)** do curso de Sistemas de Informação.
 
-Aplicativo desktop desenvolvido em **Java Swing**, integrado ao **Supabase**.
+## 🚀 Funcionalidades
 
-**Avalie • Descubra • Compartilhe**
+- **Login e cadastro:** autenticação de usuários por e-mail e senha.
+- **Catálogo:** visualização dos filmes com capa, título, gênero, ano e duração.
+- **Pesquisa e filtros:** busca por título e filtragem por gênero.
+- **Detalhes:** informações do filme, média das notas e avaliações.
+- **Avaliações:** notas de 0 a 5 estrelas, com intervalos de 0,5, e comentários.
+- **Meu perfil:** consulta, edição e exclusão das próprias avaliações, além da alteração do nome.
 
-</div>
+## 🖥️ Organização das telas
+
+O sistema foi simplificado e dividido em duas áreas principais:
+
+**1. Área de acesso**
+
+Reúne as telas de login e cadastro em uma única janela.
+
+**2. Área principal**
+
+Reúne catálogo, detalhes dos filmes, avaliações e perfil, com navegação por menu lateral.
+
+## 🛠️ Tecnologias utilizadas
+
+- Java 17+
+- Java Swing
+- MySQL
+- JDBC (MySQL Connector/J)
+- SQL
+
+## 📁 Estrutura do projeto
+
+```text
+Avaliacoes_filmes-main/
+├── avaliacao_filmes.java
+├── TelasFilmes.java
+├── Supabase.java
+├── Estilo.java
+├── inicializar.sql
+├── catalogo.sql
+└── database.properties
+```
+
+**Responsabilidades:**
+
+- `avaliacao_filmes.java` — Login, cadastro, perfil e navegação.
+- `TelasFilmes.java` — Catálogo, detalhes e avaliações.
+- `Supabase.java` — Conexão com MySQL e operações no banco.
+- `Estilo.java` — Componentes visuais, imagens e estrelas.
+- `inicializar.sql` — Criação do banco e das tabelas.
+- `catalogo.sql` — Cadastro dos 25 filmes.
+- `database.properties` — Configurações da conexão.
+
+*O nome Supabase.java foi preservado, mas a conexão atual utiliza MySQL.*
+
+## ⚙️ Como executar
+
+**Pré-requisitos:** Java JDK 17+, MySQL Server e MySQL Connector/J.
+
+**1.** Execute `inicializar.sql` e depois `catalogo.sql` no MySQL.
+
+**2.** Configure o arquivo `database.properties`:
+
+```properties
+db.host=localhost
+db.port=3306
+db.name=cinerate
+db.user=root
+db.password=SUA_SENHA
+```
+
+**3.** Coloque o driver JDBC na pasta do projeto, com o nome `mysql-connector-j.jar`.
+
+**4.** Abra o terminal na pasta do projeto e compile:
+
+```bash
+javac *.java
+```
+
+**5.** Execute a aplicação no Windows:
+
+```bat
+java -cp ".;mysql-connector-j.jar" avaliacao_filmes
+```
+
+No Linux/macOS, substitua `;` por `:`.
+
+## 🗃️ Banco de dados
+
+O sistema utiliza quatro tabelas principais:
+
+- `usuario` — Dados das contas.
+- `filme` — Informações dos filmes.
+- `genero` — Categorias dos filmes.
+- `avaliacao_web` — Notas e comentários dos usuários.
+
+Cada usuário pode cadastrar uma avaliação por filme, podendo editá-la ou excluí-la posteriormente.
+
+**Observação:** as capas dos filmes utilizam caminhos definidos no banco de dados. Os arquivos de imagem locais não estão incluídos no ZIP e devem ser disponibilizados nos caminhos correspondentes.
 
 ---
 
-## 📖 Sobre o projeto
-
-O **CineRate** permite explorar um catálogo de filmes, visualizar capas e informações e publicar avaliações com notas e comentários. Cada usuário pode consultar e gerenciar suas próprias avaliações.
-
-Projeto desenvolvido para as **Atividades Práticas Supervisionadas (APS)** do curso de Sistemas de Informação.
-
-## ✨ Funcionalidades
-
-- **Login e cadastro:** autenticação de usuários pelo Supabase Auth.
-- **Catálogo de filmes:** capas, títulos, gêneros, ano de lançamento e duração.
-- **Busca e filtros:** pesquisa por título e seleção por gênero.
-- **Avaliações:** notas de **0 a 5 estrelas**, com intervalos de meia estrela, e comentários.
-- **Meu perfil:** histórico de avaliações, com opções para editar e excluir.
-- **Área administrativa:** cadastro de novos filmes e capas por usuários autorizados.
-
-## 📂 Organização do projeto
-
-O código foi organizado em **cinco arquivos Java**, agrupando responsabilidades relacionadas para facilitar a leitura e a manutenção.
-
-```text
-CineRate/
-├── avaliacao_filmes.java   # Inicialização e navegação
-├── TelasUsuario.java      # Login, cadastro e perfil
-├── TelasFilmes.java       # Catálogo, avaliações e cadastro de filmes
-├── Supabase.java          # Autenticação e operações no banco
-├── Estilo.java            # Cores, componentes e imagens
-├── assets/
-     └── icone_cinerate.png
-```
-
-### Responsabilidades dos arquivos
-
-| Arquivo | O que faz |
-| :--- | :--- |
-| `avaliacao_filmes.java` | Inicia o aplicativo e controla a troca de telas. |
-| `TelasUsuario.java` | Reúne login, cadastro e perfil do usuário. |
-| `TelasFilmes.java` | Exibe o catálogo, detalhes, avaliações e cadastro administrativo. |
-| `Supabase.java` | Faz as requisições à API, autentica usuários e consulta/grava dados. |
-| `Estilo.java` | Padroniza cores, botões, campos, estrelas e carregamento das capas. |
-
-## 🗄️ Banco de dados
-
-| Tabela | Finalidade |
-| :--- | :--- |
-| `filme` | Dados dos filmes e URL de suas capas. |
-| `genero` | Categorias utilizadas nos filtros e cadastros. |
-| `avaliacao_web` | Notas e comentários associados a filmes e usuários. |
-| `cinerate_perfis` | Nomes públicos exibidos nas avaliações. |
-| `cinerate_admins` | Controle de usuários administradores. |
-
-A autenticação é feita pelo **Supabase Auth**. As capas ficam no bucket **`capas-filmes`**; a tabela `filme` guarda os links no campo `imagem_url`.
+**CineRate — Avalie. Descubra. Compartilhe.**
